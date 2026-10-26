@@ -1,0 +1,12 @@
+{
+  "name": "Iru & Рахат — JustUs 💞",
+  "short_name": "JustUs 💞",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fbf1f5",
+  "theme_color": "#f4b6cc",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
