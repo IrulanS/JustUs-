@@ -8,6 +8,7 @@ import { BucketLists } from "@/components/BucketLists";
 import { NoteDocs } from "@/components/NoteDocs";
 import { Questions } from "@/components/Questions";
 import { isNoteActive } from "@/lib/notes";
+import { ANNIVERSARY_ISO, daysTogether } from "@/lib/days-together";
 import {
   getDashboard,
   lock,
@@ -109,6 +110,7 @@ export function Dashboard() {
         <WeatherTile who="paxat" />
         <Countdown next={data.settings?.next_meet} last={data.settings?.last_meet} onSaved={refresh} />
         <MoodTile me={me} other={other} moods={data.moods} onSaved={refresh} />
+        
         <HeartTile
           me={me}
           other={other}
@@ -118,6 +120,7 @@ export function Dashboard() {
             refresh();
           }}
         />
+        <DaysTogetherTile />
         <NotesTile me={me} notes={data.notes} onSaved={refresh} />
         <BucketLists lists={data.bucketLists} items={data.bucketItems} onSaved={refresh} />
         <Questions questions={data.questions} drawnId={data.settings?.drawn_question_id} onSaved={refresh} />
@@ -351,6 +354,23 @@ function HeartTile({
       <p className="text-[11px] text-muted-foreground">
         today: you {today[me]} · {PEOPLE[other].name} {today[other]}
       </p>
+    </section>
+  );
+}
+
+function DaysTogetherTile() {
+  const now = useNow(60000);
+  const since = new Date(`${ANNIVERSARY_ISO}T12:00:00Z`).toLocaleDateString("fr-FR", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+  return (
+    <section className="bento col-span-2 flex flex-col items-center justify-center bg-butter/70 text-center md:col-span-1">
+      <p className="text-3xl">💞</p>
+      <p className="mt-1 font-display text-4xl font-semibold">{daysTogether(now)}</p>
+      <p className="text-xs font-semibold">days together</p>
+      <p className="text-[11px] text-muted-foreground">since {since}</p>
     </section>
   );
 }
