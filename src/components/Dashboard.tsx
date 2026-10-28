@@ -221,16 +221,13 @@ function Countdown({ next, last, onSaved }: { next: string | undefined; last: st
   const lastT = +new Date(last);
   const diff = Math.max(0, nextT - now);
   const d = Math.floor(diff / 86400000);
-  const h = Math.floor((diff / 3600000) % 24);
-  const m = Math.floor((diff / 60000) % 60);
-  const s = Math.floor((diff / 1000) % 60);
   const pct = Math.min(100, Math.max(0, ((now - lastT) / (nextT - lastT)) * 100));
 
-  return (
+return (
     <section className="bento col-span-2 bg-accent/60">
       <div className="flex items-center justify-between">
         <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
-          Next reunion · ~{new Date(next).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" })}
+          Next hug · ~{new Date(next).toLocaleDateString("en-US", { day: "numeric", month: "long", year: "numeric" })}
         </p>
         <button aria-label="Edit dates" onClick={() => setEditing((e) => !e)} className="rounded-full p-1.5 hover:bg-card">
           <Pencil className="h-3.5 w-3.5" />
@@ -262,9 +259,6 @@ function Countdown({ next, last, onSaved }: { next: string | undefined; last: st
           <div className="mt-2 flex items-baseline gap-3 font-display">
             <span className="text-5xl md:text-6xl">{d}</span>
             <span className="text-muted-foreground">days</span>
-            <span className="text-xl">
-              {String(h).padStart(2, "0")}:{String(m).padStart(2, "0")}:{String(s).padStart(2, "0")}
-            </span>
           </div>
           <div className="mt-4">
             <div className="mb-1 flex justify-between text-xs text-muted-foreground">
