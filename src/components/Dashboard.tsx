@@ -20,18 +20,22 @@ import {
 
 const PEOPLE = {
   iru: { name: "Iru", city: "Paris", tz: "Europe/Paris", lat: 48.8566, lon: 2.3522 },
-  paxat: { name: "Рахат", city: "Aktobe", tz: "Asia/Aqtobe", lat: 50.2839, lon: 57.167 }, // 🚨 CORRIGÉ ICI (paxat au lieu de rakhat)
+  paxat: { name: "Рахат", city: "Aktobe", tz: "Asia/Aqtobe", lat: 50.2839, lon: 57.167 },
 } as const;
 
 const MOODS = [
-  ["🥰", "in love"],
-  ["😊", "feeling good"],
+  ["🥳", "super happy"],
+  ["🥰", "thinking of u"],
+  ["😎", "chill"],
+  ["😊", "focused"],
+  ["🤤", "hungry"],
   ["😴", "tired"],
-  ["🥺", "missing you"],
-  ["😤", "stressed"],
-  ["🤒", "unwell"],
-  ["🤓", "focused"],
-  ["🎉", "great"],
+  ["🥺", "missing u"],
+  ["😭", "sad"],
+  ["😟", "stressed"],
+  ["😑", "grumpy"],
+  ["🤧", "unwell"],
+  ["👉👈", "wanting u"],
 ] as const;
 
 function weatherEmoji(code: number, day: boolean) {
@@ -58,7 +62,6 @@ export function Dashboard() {
   });
   const refresh = () => qc.invalidateQueries({ queryKey: ["dashboard"] });
 
-  // floating hearts
   const [floating, setFloating] = useState<{ id: string; left: number; mine: boolean }[]>([]);
   const seen = useRef<Set<string> | null>(null);
   const spawn = (n: number, mine: boolean) => {
@@ -83,7 +86,7 @@ export function Dashboard() {
     const fromOther = fresh.filter((h) => h.who !== data.who).length;
     if (fromOther > 0) {
       spawn(Math.min(fromOther * 4, 20), false);
-      toast(`${PEOPLE[data.who === "iru" ? "paxat" : "iru"].name} sends you hearts 💗`); // 🚨 CORRIGÉ ICI
+      toast(`${PEOPLE[data.who === "iru" ? "paxat" : "iru"].name} sends you hearts 💗`);
     }
   }, [data]);
 
@@ -96,14 +99,14 @@ export function Dashboard() {
   }
 
   const me = data.who as Who;
-  const other: Who = me === "iru" ? "paxat" : "iru"; // 🚨 CORRIGÉ ICI
+  const other: Who = me === "iru" ? "paxat" : "iru";
 
   return (
     <main className="mx-auto max-w-5xl px-4 pb-16 pt-[max(1.25rem,env(safe-area-inset-top))]">
       <Header />
       <div className="grid grid-cols-2 gap-3 md:grid-cols-4 md:gap-4">
         <WeatherTile who="iru" />
-        <WeatherTile who="paxat" /> {/* 🚨 CORRIGÉ ICI */}
+        <WeatherTile who="paxat" />
         <Countdown next={data.settings?.next_meet} last={data.settings?.last_meet} onSaved={refresh} />
         <MoodTile me={me} other={other} moods={data.moods} onSaved={refresh} />
         <HeartTile
@@ -182,7 +185,7 @@ function WeatherTile({ who }: { who: Who }) {
     },
     refetchInterval: 15 * 60000,
   });
-  const time = new Date(now).toLocaleTimeString("en-US", { timeZone: p.tz, hour: "2-digit", minute: "2-digit" });
+  const time = new Date(now).toLocaleTimeString("fr-FR", { timeZone: p.tz, hour: "2-digit", minute: "2-digit" });
   return (
     <section className={`bento ${who === "iru" ? "bg-sky/70" : "bg-butter/70"}`}>
       <div className="flex items-start justify-between">
